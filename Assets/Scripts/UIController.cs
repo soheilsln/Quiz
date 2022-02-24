@@ -14,7 +14,6 @@ public class UIController : MonoBehaviour
 
     private void Start()
     {
-        startPanel.SetActive(true);
         startButton.onClick.AddListener(OnStartButtonClicked);
     }
 
