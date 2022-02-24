@@ -50,7 +50,7 @@ public class QuestionGenerator
                 }
                 question.answer = int.Parse(splitData[splitData.Length - 1]);
 
-                AssetDatabase.CreateAsset(question, $"Assets/Questions/question{question.id}.asset");
+                AssetDatabase.CreateAsset(question, $"Assets/Resources/Questions/question{question.id}.asset");
             }
 
             lineNumber++;
