@@ -9,11 +9,11 @@ public class QuestionGenerator
     private static string quizDataPath = "/Editor/QuizData/Data.csv";
     private static int maxOptionNumber = 4;
 
-    [MenuItem("Utilities/Generate Questions")]
+    [MenuItem("Tools/Generate Questions")]
     public static void GenerateQuestions()
     {
         //Delete previous questions
-        string[] questionsFolder = { "Assets/Questions" };
+        string[] questionsFolder = { "Assets/Resources/Questions" };
         foreach (string asset in AssetDatabase.FindAssets("", questionsFolder))
         {
             string path = AssetDatabase.GUIDToAssetPath(asset);
@@ -50,7 +50,7 @@ public class QuestionGenerator
                 }
                 question.answer = int.Parse(splitData[splitData.Length - 1]);
 
-                AssetDatabase.CreateAsset(question, $"Assets/Resources/Questions/question{question.id}.asset");
+                AssetDatabase.CreateAsset(question, $"Assets/Resources/Questions/Question_{question.id.ToString("0000")}.asset");
             }
 
             lineNumber++;

@@ -38,4 +38,18 @@ public class GameManager : MonoBehaviour
         return questions;
     }
 
+    public List<string> GetCategories()
+    {
+        //return all unique categories
+        List<string> categories = new List<string>();
+
+        foreach (Question question in questions)
+        {
+            if (!categories.Contains(question.category))
+                categories.Add(question.category);
+        }
+
+        return categories;
+    }
+
 }
