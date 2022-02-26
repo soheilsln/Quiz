@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 4
   category: Category A
-  questionText: Question 3 Category A
+  questionText: Question 3 Category A?
   options:
   - Option A
   - Option B

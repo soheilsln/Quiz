@@ -33,11 +33,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public List<Question> GetQuestions()
-    {
-        return questions;
-    }
-
     public List<string> GetCategories()
     {
         //return all unique categories
@@ -50,6 +45,22 @@ public class GameManager : MonoBehaviour
         }
 
         return categories;
+    }
+
+    public List<Question> GetCategoryQuestions(string category)
+    {
+        //return all questions in the category
+        List<Question> categoryQuestions = new List<Question>();
+
+        foreach (Question question in questions)
+        {
+            if(question.category == category)
+            {
+                categoryQuestions.Add(question);
+            }
+        }
+
+        return categoryQuestions;
     }
 
 }
