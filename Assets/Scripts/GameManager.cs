@@ -9,6 +9,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private float maxTime = 10f;
 
+    private int currentNumberOfQuestions;
+    private int result;
+
     void Awake()
     {
         if (instance == null)
@@ -24,6 +27,11 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         LoadQuestions();
+    }
+
+    private void Start()
+    {
+        UIController.OnAnswered += this.OnAnswered;
     }
 
     private void LoadQuestions()
@@ -52,22 +60,36 @@ public class GameManager : MonoBehaviour
     public List<Question> GetCategoryQuestions(string category)
     {
         //return all questions in the category
+        result = 0;
         List<Question> categoryQuestions = new List<Question>();
 
         foreach (Question question in questions)
         {
-            if(question.category == category)
+            if (question.category == category)
             {
                 categoryQuestions.Add(question);
             }
         }
 
+        currentNumberOfQuestions = categoryQuestions.Count;
         return categoryQuestions;
     }
 
     public float GetMaxTime()
     {
         return maxTime;
+    }
+
+    private void OnAnswered(bool value)
+    {
+        if (value)
+            result++;
+    }
+
+    public float GetResult()
+    {
+        float r = (float)result / (float)currentNumberOfQuestions;
+        return r;
     }
 
 }

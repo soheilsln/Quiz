@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,11 +26,14 @@ public class UIController : MonoBehaviour
     [Header("Reslut Panel")]
     public GameObject resultPanel;
     public Button StartNewQuizButton;
+    public Text rankingText;
 
     private string currentCategory;
     private List<Question> currentQuestions = new List<Question>();
     private int currentQuestionIndex = 0;
     private bool currentQuestionAnswered = false;
+
+    public static event Action<bool> OnAnswered;
 
     private void Start()
     {
@@ -114,6 +118,7 @@ public class UIController : MonoBehaviour
 
     private void OnOptionButtonClicked(int optionNumer)
     {
+        //Activate next question and see results buttons based on current question
         currentQuestionAnswered = true;
         if (currentQuestionIndex + 1 < currentQuestions.Count)
         {
@@ -126,14 +131,19 @@ public class UIController : MonoBehaviour
             seeResultButton.gameObject.SetActive(true);
         }
 
+        //Change the color of buttons based on the answer
         if (currentQuestions[currentQuestionIndex].answer == optionNumer + 1)
         {
             options[optionNumer].image.color = Color.green;
+            if (OnAnswered != null)
+                OnAnswered(true);
         }
         else
         {
             options[optionNumer].image.color = Color.red;
             options[currentQuestions[currentQuestionIndex].answer - 1].image.color = Color.green;
+            if (OnAnswered != null)
+                OnAnswered(false);
         }
     }
 
@@ -147,6 +157,21 @@ public class UIController : MonoBehaviour
     {
         seeResultButton.gameObject.SetActive(false);
         quizPanel.SetActive(false);
+
+        float result = GameManager.instance.GetResult();
+        if(result >= 0.75)
+        {
+            rankingText.text = "WOW !";
+        }
+        else if(result >= 0.5)
+        {
+            rankingText.text = "You are smart !";
+        }
+        else
+        {
+            rankingText.text = "You can do better!";
+        }
+
         resultPanel.SetActive(true);
     }
 
