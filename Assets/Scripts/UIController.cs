@@ -22,6 +22,7 @@ public class UIController : MonoBehaviour
     public Button[] options;
     public Button nextQuestionButton;
     public Button seeResultButton;
+    public Button fiftyFiftyButton;
 
     [Header("Reslut Panel")]
     public GameObject resultPanel;
@@ -47,6 +48,7 @@ public class UIController : MonoBehaviour
         nextQuestionButton.onClick.AddListener(OnNextQuestionButtonClicked);
         seeResultButton.onClick.AddListener(OnSeeResultButtonClicked);
         StartNewQuizButton.onClick.AddListener(OnStartButtonClicked);
+        fiftyFiftyButton.onClick.AddListener(FiftyFiftyOptions);
     }
 
     private void OnStartButtonClicked()
@@ -82,6 +84,7 @@ public class UIController : MonoBehaviour
     {
         //Reset panel
         nextQuestionButton.gameObject.SetActive(false);
+        fiftyFiftyButton.gameObject.SetActive(true);
         currentQuestionAnswered = false;
         foreach (Button option in options)
         {
@@ -97,12 +100,14 @@ public class UIController : MonoBehaviour
             options[i].GetComponentInChildren<Text>().text = currentQuestions[currentQuestionIndex].options[i];
             options[i].gameObject.SetActive(true);
         }
+        ToggleOptions(true);
         StartCoroutine(StartTimer());
 
     }
 
     private IEnumerator StartTimer()
     {
+        timer.color = Color.green;
         float maxTime = GameManager.instance.GetMaxTime();
         float time = maxTime;
         while (time >= 0 && !currentQuestionAnswered)
@@ -114,22 +119,22 @@ public class UIController : MonoBehaviour
 
             yield return new WaitForSeconds(Time.deltaTime);
         }
+
+        if (time < 0)
+        {
+            options[currentQuestions[currentQuestionIndex].answer].image.color = Color.green;
+            if (OnAnswered != null)
+                OnAnswered(false);
+            ActivateNextQuestion();
+            ToggleOptions(false);
+        }
     }
 
     private void OnOptionButtonClicked(int optionNumer)
     {
         //Activate next question and see results buttons based on current question
         currentQuestionAnswered = true;
-        if (currentQuestionIndex + 1 < currentQuestions.Count)
-        {
-            nextQuestionButton.gameObject.SetActive(true);
-            seeResultButton.gameObject.SetActive(false);
-        }
-        else
-        {
-            nextQuestionButton.gameObject.SetActive(false);
-            seeResultButton.gameObject.SetActive(true);
-        }
+        ActivateNextQuestion();
 
         //Change the color of buttons based on the answer
         if (currentQuestions[currentQuestionIndex].answer == optionNumer + 1)
@@ -145,6 +150,34 @@ public class UIController : MonoBehaviour
             if (OnAnswered != null)
                 OnAnswered(false);
         }
+
+        //Disable options after question answered
+        ToggleOptions(false);
+    }
+
+    private void ActivateNextQuestion()
+    {
+        if (currentQuestionIndex + 1 < currentQuestions.Count)
+        {
+            nextQuestionButton.gameObject.SetActive(true);
+            seeResultButton.gameObject.SetActive(false);
+            fiftyFiftyButton.gameObject.SetActive(false);
+        }
+        else
+        {
+            nextQuestionButton.gameObject.SetActive(false);
+            seeResultButton.gameObject.SetActive(true);
+            fiftyFiftyButton.gameObject.SetActive(false);
+        }
+    }
+
+    private void ToggleOptions(bool value)
+    {
+        //Enable or Disable options
+        foreach (Button option in options)
+        {
+            option.interactable = value;
+        }
     }
 
     private void OnNextQuestionButtonClicked()
@@ -159,11 +192,11 @@ public class UIController : MonoBehaviour
         quizPanel.SetActive(false);
 
         float result = GameManager.instance.GetResult();
-        if(result >= 0.75)
+        if (result >= 0.75)
         {
             rankingText.text = "WOW !";
         }
-        else if(result >= 0.5)
+        else if (result >= 0.5)
         {
             rankingText.text = "You are smart !";
         }
@@ -173,6 +206,27 @@ public class UIController : MonoBehaviour
         }
 
         resultPanel.SetActive(true);
+    }
+
+    private void FiftyFiftyOptions()
+    {
+        fiftyFiftyButton.gameObject.SetActive(false);
+        int numberOfOptions = currentQuestions[currentQuestionIndex].options.Count;
+        int answer = currentQuestions[currentQuestionIndex].answer - 1;
+        int otherOption = answer;
+
+        while (otherOption == answer)
+        {
+            otherOption = UnityEngine.Random.Range(0, numberOfOptions);
+        }
+
+        for (int i = 0; i < numberOfOptions; i++)
+        {
+            if (i != answer && i != otherOption)
+            {
+                options[i].gameObject.SetActive(false);
+            }
+        }
     }
 
 }
