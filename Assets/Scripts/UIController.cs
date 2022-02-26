@@ -23,6 +23,7 @@ public class UIController : MonoBehaviour
     public Button nextQuestionButton;
     public Button seeResultButton;
     public Button fiftyFiftyButton;
+    public Text coinsText;
 
     [Header("Reslut Panel")]
     public GameObject resultPanel;
@@ -35,6 +36,7 @@ public class UIController : MonoBehaviour
     private bool currentQuestionAnswered = false;
 
     public static event Action<bool> OnAnswered;
+    public static event Action FiftyFiftyClicked;
 
     private void Start()
     {
@@ -48,7 +50,7 @@ public class UIController : MonoBehaviour
         nextQuestionButton.onClick.AddListener(OnNextQuestionButtonClicked);
         seeResultButton.onClick.AddListener(OnSeeResultButtonClicked);
         StartNewQuizButton.onClick.AddListener(OnStartButtonClicked);
-        fiftyFiftyButton.onClick.AddListener(FiftyFiftyOptions);
+        fiftyFiftyButton.onClick.AddListener(OnFiftyFiftyButtonClicked);
     }
 
     private void OnStartButtonClicked()
@@ -85,6 +87,13 @@ public class UIController : MonoBehaviour
         //Reset panel
         nextQuestionButton.gameObject.SetActive(false);
         fiftyFiftyButton.gameObject.SetActive(true);
+
+        if (CoinManager.instance.GetCoins() >= -CoinManager.instance.GetFiftyFiftyCoins())
+            fiftyFiftyButton.interactable = true;
+        else
+            fiftyFiftyButton.interactable = false;
+
+        SetCoinsText();
         currentQuestionAnswered = false;
         foreach (Button option in options)
         {
@@ -114,15 +123,17 @@ public class UIController : MonoBehaviour
         {
             time -= Time.deltaTime;
             timer.fillAmount = time / maxTime;
-            if (timer.fillAmount < 0.3f)
+            if (timer.fillAmount < 0.33f)
                 timer.color = Color.red;
+            else if (timer.fillAmount < 0.66f)
+                timer.color = new Color(1f, 0.84f, 0f);//Orange
 
             yield return new WaitForSeconds(Time.deltaTime);
         }
 
         if (time < 0)
         {
-            options[currentQuestions[currentQuestionIndex].answer].image.color = Color.green;
+            options[currentQuestions[currentQuestionIndex].answer - 1].image.color = Color.green;
             if (OnAnswered != null)
                 OnAnswered(false);
             ActivateNextQuestion();
@@ -142,6 +153,7 @@ public class UIController : MonoBehaviour
             options[optionNumer].image.color = Color.green;
             if (OnAnswered != null)
                 OnAnswered(true);
+            SetCoinsText();
         }
         else
         {
@@ -194,21 +206,21 @@ public class UIController : MonoBehaviour
         float result = GameManager.instance.GetResult();
         if (result >= 0.75)
         {
-            rankingText.text = "WOW !";
+            rankingText.text = "WOW !\nMore than 75% correct answers!";
         }
         else if (result >= 0.5)
         {
-            rankingText.text = "You are smart !";
+            rankingText.text = "You are smart !\nMore than 50% correct answers!";
         }
         else
         {
-            rankingText.text = "You can do better!";
+            rankingText.text = "You can do better!\nLess than 50% correct answers!";
         }
 
         resultPanel.SetActive(true);
     }
 
-    private void FiftyFiftyOptions()
+    private void OnFiftyFiftyButtonClicked()
     {
         fiftyFiftyButton.gameObject.SetActive(false);
         int numberOfOptions = currentQuestions[currentQuestionIndex].options.Count;
@@ -227,6 +239,15 @@ public class UIController : MonoBehaviour
                 options[i].gameObject.SetActive(false);
             }
         }
+
+        if (FiftyFiftyClicked != null)
+            FiftyFiftyClicked();
+        SetCoinsText();
+    }
+
+    private void SetCoinsText()
+    {
+        coinsText.text = "Coins = " + CoinManager.instance.GetCoins();
     }
 
 }

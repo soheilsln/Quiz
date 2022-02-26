@@ -157,8 +157,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 250}
-  m_SizeDelta: {x: 783.5087, y: 146.9078}
+  m_AnchoredPosition: {x: 0, y: 250.15541}
+  m_SizeDelta: {x: 783.5087, y: 375.3008}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &39716117
 MonoBehaviour:
@@ -193,7 +193,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: WOW !
+  m_Text: 'WOW !
+
+    More than 75% correct answers!'
 --- !u!222 &39716118
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -354,6 +356,85 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 331866870}
+  m_CullTransparentMesh: 1
+--- !u!1 &365954681
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 365954682}
+  - component: {fileID: 365954684}
+  - component: {fileID: 365954683}
+  m_Layer: 5
+  m_Name: CoinsText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &365954682
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 365954681}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2037392123}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 250}
+  m_SizeDelta: {x: 675, y: 125}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &365954683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 365954681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: 98194fbaac3267549baf9e0a76396908, type: 3}
+    m_FontSize: 50
+    m_FontStyle: 1
+    m_BestFit: 0
+    m_MinSize: 5
+    m_MaxSize: 50
+    m_Alignment: 4
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: Coins = 100
+--- !u!222 &365954684
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 365954681}
   m_CullTransparentMesh: 1
 --- !u!1 &393856931
 GameObject:
@@ -1520,6 +1601,7 @@ MonoBehaviour:
   nextQuestionButton: {fileID: 508363316}
   seeResultButton: {fileID: 578087819}
   fiftyFiftyButton: {fileID: 1002020035}
+  coinsText: {fileID: 365954683}
   resultPanel: {fileID: 2013224665}
   StartNewQuizButton: {fileID: 1202459131}
   rankingText: {fileID: 39716117}
@@ -1672,7 +1754,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 50/50
+  m_Text: 50/50 (50 coins)
 --- !u!222 &783746170
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2033,7 +2115,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.2852435, g: 0.19215688, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.016102834, g: 0, b: 0.14150941, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -2144,7 +2226,7 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 5
     m_MaxSize: 50
-    m_Alignment: 3
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -2748,7 +2830,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 0, a: 1}
+  m_Color: {r: 0.990566, g: 0.990566, b: 0.6510323, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3541,6 +3623,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1741055138}
   - component: {fileID: 1741055139}
+  - component: {fileID: 1741055140}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -3574,7 +3657,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bc688898f6e7624088dcce6af43db62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxTime: 5
+  maxTime: 10
+--- !u!114 &1741055140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1741055137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66ee4c7c8a78deb4e8ae062435765add, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  correctAnswerCoins: 50
+  fiftyFiftyCoins: -50
 --- !u!1 &1752192408
 GameObject:
   m_ObjectHideFlags: 0
@@ -4106,6 +4203,7 @@ RectTransform:
   - {fileID: 508363315}
   - {fileID: 578087818}
   - {fileID: 1002020034}
+  - {fileID: 365954682}
   m_Father: {fileID: 746608765}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

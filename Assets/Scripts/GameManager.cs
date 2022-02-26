@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     private int currentNumberOfQuestions;
     private int result;
 
-    void Awake()
+    private void Awake()
     {
         if (instance == null)
         {
@@ -32,6 +32,11 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         UIController.OnAnswered += this.OnAnswered;
+    }
+
+    private void OnDestroy()
+    {
+        UIController.OnAnswered -= this.OnAnswered;
     }
 
     private void LoadQuestions()
