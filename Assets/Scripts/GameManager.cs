@@ -6,6 +6,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance; //Singleton
     private List<Question> questions = new List<Question>();
+    [SerializeField]
+    private float maxTime = 10f;
 
     void Awake()
     {
@@ -61,6 +63,11 @@ public class GameManager : MonoBehaviour
         }
 
         return categoryQuestions;
+    }
+
+    public float GetMaxTime()
+    {
+        return maxTime;
     }
 
 }
