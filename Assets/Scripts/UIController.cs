@@ -29,6 +29,7 @@ public class UIController : MonoBehaviour
     public GameObject resultPanel;
     public Button StartNewQuizButton;
     public Text rankingText;
+    public Text resultCoinsText;
 
     private string currentCategory;
     private List<Question> currentQuestions = new List<Question>();
@@ -37,6 +38,7 @@ public class UIController : MonoBehaviour
 
     public static event Action<bool> OnAnswered;
     public static event Action FiftyFiftyClicked;
+    public static event Action<int> OnQuizFinished;
 
     private void Start()
     {
@@ -51,6 +53,7 @@ public class UIController : MonoBehaviour
         seeResultButton.onClick.AddListener(OnSeeResultButtonClicked);
         StartNewQuizButton.onClick.AddListener(OnStartButtonClicked);
         fiftyFiftyButton.onClick.AddListener(OnFiftyFiftyButtonClicked);
+        fiftyFiftyButton.GetComponentInChildren<Text>().text = "50/50 (" + CoinManager.instance.FiftyFiftyCoins + " coins)";
     }
 
     private void OnStartButtonClicked()
@@ -88,7 +91,7 @@ public class UIController : MonoBehaviour
         nextQuestionButton.gameObject.SetActive(false);
         fiftyFiftyButton.gameObject.SetActive(true);
 
-        if (CoinManager.instance.GetCoins() >= -CoinManager.instance.GetFiftyFiftyCoins())
+        if (CoinManager.instance.Coins >= CoinManager.instance.FiftyFiftyCoins)
             fiftyFiftyButton.interactable = true;
         else
             fiftyFiftyButton.interactable = false;
@@ -117,7 +120,7 @@ public class UIController : MonoBehaviour
     private IEnumerator StartTimer()
     {
         timer.color = Color.green;
-        float maxTime = GameManager.instance.GetMaxTime();
+        float maxTime = GameManager.instance.MaxTime;
         float time = maxTime;
         while (time >= 0 && !currentQuestionAnswered)
         {
@@ -153,7 +156,6 @@ public class UIController : MonoBehaviour
             options[optionNumer].image.color = Color.green;
             if (OnAnswered != null)
                 OnAnswered(true);
-            SetCoinsText();
         }
         else
         {
@@ -203,20 +205,30 @@ public class UIController : MonoBehaviour
         seeResultButton.gameObject.SetActive(false);
         quizPanel.SetActive(false);
 
-        float result = GameManager.instance.GetResult();
+        float result = GameManager.instance.GetFinalResult();
         if (result >= 0.75)
         {
-            rankingText.text = "WOW !\nMore than 75% correct answers!";
+            rankingText.text = "WOW !\nMore than 75% correct answers!" +
+                " (" + CoinManager.instance.FirstRankCoins + " coins)";
+            if (OnQuizFinished != null)
+                OnQuizFinished(1);
         }
         else if (result >= 0.5)
         {
-            rankingText.text = "You are smart !\nMore than 50% correct answers!";
+            rankingText.text = "You are smart !\nMore than 50% correct answers!" +
+                " (" + CoinManager.instance.SecondRankCoins + " coins)";
+            if (OnQuizFinished != null)
+                OnQuizFinished(2);
         }
         else
         {
-            rankingText.text = "You can do better!\nLess than 50% correct answers!";
+            rankingText.text = "You can do better!\nLess than 50% correct answers!" +
+                " (" + CoinManager.instance.ThirdRankCoins + " coins)";
+            if (OnQuizFinished != null)
+                OnQuizFinished(3);
         }
 
+        SetCoinsText();
         resultPanel.SetActive(true);
     }
 
@@ -247,7 +259,8 @@ public class UIController : MonoBehaviour
 
     private void SetCoinsText()
     {
-        coinsText.text = "Coins = " + CoinManager.instance.GetCoins();
+        coinsText.text = "Coins = " + CoinManager.instance.Coins;
+        resultCoinsText.text = "Coins = " + CoinManager.instance.Coins;
     }
 
 }

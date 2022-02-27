@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     private List<Question> questions = new List<Question>();
     [SerializeField]
     private float maxTime = 10f;
+    public float MaxTime { get { return maxTime; } }
 
     private int currentNumberOfQuestions;
     private int result;
@@ -80,18 +81,13 @@ public class GameManager : MonoBehaviour
         return categoryQuestions;
     }
 
-    public float GetMaxTime()
-    {
-        return maxTime;
-    }
-
     private void OnAnswered(bool value)
     {
         if (value)
             result++;
     }
 
-    public float GetResult()
+    public float GetFinalResult()
     {
         float r = (float)result / (float)currentNumberOfQuestions;
         return r;

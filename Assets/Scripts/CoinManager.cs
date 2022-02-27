@@ -4,13 +4,24 @@ using UnityEngine;
 
 public class CoinManager : MonoBehaviour
 {
-    private int coins = 100;
-    [SerializeField]
-    private int correctAnswerCoins = 50;
-    [SerializeField]
-    private int fiftyFiftyCoins = -50;
-
     public static CoinManager instance; //Singleton
+
+    [SerializeField]
+    private int coins = 100; //set for starting coins
+    public int Coins { get { return coins; } }
+    [SerializeField]
+    private int firstRankCoins = 100;
+    public int FirstRankCoins { get { return firstRankCoins; } }
+    [SerializeField]
+    private int secondRankCoins = 50;
+    public int SecondRankCoins { get { return secondRankCoins; } }
+    [SerializeField]
+    private int thirdRankCoins = 0;
+    public int ThirdRankCoins { get { return thirdRankCoins; } }
+    [SerializeField]
+    private int fiftyFiftyCoins = 50;
+    public int FiftyFiftyCoins { get { return fiftyFiftyCoins; } }
+
     private void Awake()
     {
         if (instance == null)
@@ -26,24 +37,14 @@ public class CoinManager : MonoBehaviour
 
     private void Start()
     {
-        UIController.OnAnswered += this.OnAnswered;
         UIController.FiftyFiftyClicked += this.OnFiftyFiftyClicked;
+        UIController.OnQuizFinished += this.OnQuizFinished;
     }
 
     private void OnDestroy()
     {
-        UIController.OnAnswered -= this.OnAnswered;
         UIController.FiftyFiftyClicked -= this.OnFiftyFiftyClicked;
-    }
-
-    public int GetCoins()
-    {
-        return coins;
-    }
-
-    public int GetFiftyFiftyCoins()
-    {
-        return fiftyFiftyCoins;
+        UIController.OnQuizFinished -= this.OnQuizFinished;
     }
 
     private void ChangeCoins(int value)
@@ -52,15 +53,19 @@ public class CoinManager : MonoBehaviour
         PlayerPrefs.SetInt("coins", coins);
     }
 
-    private void OnAnswered(bool value)
+    private void OnQuizFinished(int rank)
     {
-        if (value)
-            coins += correctAnswerCoins;
+        if (rank == 1)
+            ChangeCoins(firstRankCoins);
+        else if (rank == 2)
+            ChangeCoins(secondRankCoins);
+        else
+            ChangeCoins(thirdRankCoins);
     }
 
     private void OnFiftyFiftyClicked()
     {
-        ChangeCoins(fiftyFiftyCoins);
+        ChangeCoins(-fiftyFiftyCoins);
     }
 
 }
