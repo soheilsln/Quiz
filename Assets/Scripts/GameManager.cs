@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private float maxTime = 10f;
     public float MaxTime { get { return maxTime; } }
+    public CoinManager coinManager;
 
     private int currentNumberOfQuestions;
     private int result;
@@ -28,6 +29,7 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         LoadQuestions();
+        coinManager = this.GetComponent<CoinManager>();
     }
 
     private void Start()

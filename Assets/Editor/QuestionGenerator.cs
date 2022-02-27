@@ -31,7 +31,7 @@ public class QuestionGenerator
                 string[] splitData = line.Split(',');
 
                 //Check the number of values
-                if (splitData.Length != 8)
+                if (splitData.Length != maxOptionNumber + 4)
                 {
                     Debug.LogError("Not Enough Values On Line Number " + lineNumber);
                     return;

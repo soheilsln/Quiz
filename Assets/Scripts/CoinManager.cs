@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class CoinManager : MonoBehaviour
 {
-    public static CoinManager instance; //Singleton
-
     [SerializeField]
     private int coins = 100; //set for starting coins
     public int Coins { get { return coins; } }
@@ -24,11 +22,6 @@ public class CoinManager : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-        }
-
         if (!PlayerPrefs.HasKey("coins"))
             PlayerPrefs.SetInt("coins", coins);
         else

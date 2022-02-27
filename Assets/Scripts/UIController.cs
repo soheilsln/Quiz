@@ -35,10 +35,18 @@ public class UIController : MonoBehaviour
     private List<Question> currentQuestions = new List<Question>();
     private int currentQuestionIndex = 0;
     private bool currentQuestionAnswered = false;
+    private GameManager gameManager;
+    private CoinManager coinManager;
 
     public static event Action<bool> OnAnswered;
     public static event Action FiftyFiftyClicked;
     public static event Action<int> OnQuizFinished;
+
+    private void Awake()
+    {
+        gameManager = GameManager.instance;
+        coinManager = gameManager.coinManager;
+    }
 
     private void Start()
     {
@@ -53,7 +61,7 @@ public class UIController : MonoBehaviour
         seeResultButton.onClick.AddListener(OnSeeResultButtonClicked);
         StartNewQuizButton.onClick.AddListener(OnStartButtonClicked);
         fiftyFiftyButton.onClick.AddListener(OnFiftyFiftyButtonClicked);
-        fiftyFiftyButton.GetComponentInChildren<Text>().text = "50/50 (" + CoinManager.instance.FiftyFiftyCoins + " coins)";
+        fiftyFiftyButton.GetComponentInChildren<Text>().text = "50/50 (" + coinManager.FiftyFiftyCoins + " coins)";
     }
 
     private void OnStartButtonClicked()
@@ -69,7 +77,7 @@ public class UIController : MonoBehaviour
     private void CreateCategories()
     {
         //Add categories to dropdown menu
-        List<string> categories = GameManager.instance.GetCategories();
+        List<string> categories = gameManager.GetCategories();
         categoriesDropdown.ClearOptions();
 
         categoriesDropdown.AddOptions(categories);
@@ -80,7 +88,7 @@ public class UIController : MonoBehaviour
         currentCategory = categoriesDropdown.options[categoriesDropdown.value].text;
         categoriesPanel.SetActive(false);
 
-        currentQuestions = GameManager.instance.GetCategoryQuestions(currentCategory);
+        currentQuestions = gameManager.GetCategoryQuestions(currentCategory);
         UpdateQuizPanel();
         quizPanel.SetActive(true);
     }
@@ -91,7 +99,7 @@ public class UIController : MonoBehaviour
         nextQuestionButton.gameObject.SetActive(false);
         fiftyFiftyButton.gameObject.SetActive(true);
 
-        if (CoinManager.instance.Coins >= CoinManager.instance.FiftyFiftyCoins)
+        if (coinManager.Coins >= coinManager.FiftyFiftyCoins)
             fiftyFiftyButton.interactable = true;
         else
             fiftyFiftyButton.interactable = false;
@@ -120,7 +128,7 @@ public class UIController : MonoBehaviour
     private IEnumerator StartTimer()
     {
         timer.color = Color.green;
-        float maxTime = GameManager.instance.MaxTime;
+        float maxTime = gameManager.MaxTime;
         float time = maxTime;
         while (time >= 0 && !currentQuestionAnswered)
         {
@@ -205,25 +213,25 @@ public class UIController : MonoBehaviour
         seeResultButton.gameObject.SetActive(false);
         quizPanel.SetActive(false);
 
-        float result = GameManager.instance.GetFinalResult();
+        float result = gameManager.GetFinalResult();
         if (result >= 0.75)
         {
             rankingText.text = "WOW !\nMore than 75% correct answers!" +
-                " (" + CoinManager.instance.FirstRankCoins + " coins)";
+                " (" + coinManager.FirstRankCoins + " coins)";
             if (OnQuizFinished != null)
                 OnQuizFinished(1);
         }
         else if (result >= 0.5)
         {
             rankingText.text = "You are smart !\nMore than 50% correct answers!" +
-                " (" + CoinManager.instance.SecondRankCoins + " coins)";
+                " (" + coinManager.SecondRankCoins + " coins)";
             if (OnQuizFinished != null)
                 OnQuizFinished(2);
         }
         else
         {
             rankingText.text = "You can do better!\nLess than 50% correct answers!" +
-                " (" + CoinManager.instance.ThirdRankCoins + " coins)";
+                " (" + coinManager.ThirdRankCoins + " coins)";
             if (OnQuizFinished != null)
                 OnQuizFinished(3);
         }
@@ -259,8 +267,8 @@ public class UIController : MonoBehaviour
 
     private void SetCoinsText()
     {
-        coinsText.text = "Coins = " + CoinManager.instance.Coins;
-        resultCoinsText.text = "Coins = " + CoinManager.instance.Coins;
+        coinsText.text = "Coins = " + coinManager.Coins;
+        resultCoinsText.text = "Coins = " + coinManager.Coins;
     }
 
 }
