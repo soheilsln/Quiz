@@ -43,10 +43,18 @@ public class QuestionGenerator
                 question.category = splitData[1];
                 question.questionText = splitData[2];
                 question.options = new List<string>();
+                
                 for (int i = 3; i < maxOptionNumber + 3; i++)
                 {
                     if (splitData[i] != "")
+                    {
                         question.options.Add(splitData[i]);
+                    }
+                    else if (i >= 3 && i < maxOptionNumber + 2) //Check the number of blank options
+                    {
+                        Debug.LogError("Not Enough Options On Line Number " + lineNumber);
+                        return;
+                    }
                 }
                 question.answer = int.Parse(splitData[splitData.Length - 1]);
 
