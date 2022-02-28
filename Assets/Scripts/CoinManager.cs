@@ -22,6 +22,7 @@ public class CoinManager : MonoBehaviour
 
     private void Awake()
     {
+        //Save and load number of coins
         if (!PlayerPrefs.HasKey("coins"))
             PlayerPrefs.SetInt("coins", coins);
         else
@@ -42,12 +43,14 @@ public class CoinManager : MonoBehaviour
 
     private void ChangeCoins(int value)
     {
+        //Add value to coins and save the new number of coins
         coins += value;
         PlayerPrefs.SetInt("coins", coins);
     }
 
     private void OnQuizFinished(int rank)
     {
+        //Change coins base on the rank
         if (rank == 1)
             ChangeCoins(firstRankCoins);
         else if (rank == 2)
@@ -58,6 +61,7 @@ public class CoinManager : MonoBehaviour
 
     private void OnFiftyFiftyClicked()
     {
+        //Decrease number of coins after fifty fifty clicked
         ChangeCoins(-fiftyFiftyCoins);
     }
 

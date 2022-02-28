@@ -50,6 +50,7 @@ public class UIController : MonoBehaviour
 
     private void Start()
     {
+        //Adding on click listeners for buttons
         startButton.onClick.AddListener(OnStartButtonClicked);
         startQuizButton.onClick.AddListener(OnStartQuizButtonClicked);
         for (int i = 0; i < options.Length; i++)
@@ -66,6 +67,7 @@ public class UIController : MonoBehaviour
 
     private void OnStartButtonClicked()
     {
+        //Change panels and create categories
         startPanel.SetActive(false);
         resultPanel.SetActive(false);
 
@@ -85,6 +87,7 @@ public class UIController : MonoBehaviour
 
     private void OnStartQuizButtonClicked()
     {
+        //Change panels and update the quiz panel based on first question of the selected category
         currentCategory = categoriesDropdown.options[categoriesDropdown.value].text;
         categoriesPanel.SetActive(false);
 
@@ -127,6 +130,7 @@ public class UIController : MonoBehaviour
 
     private IEnumerator StartTimer()
     {
+        //Change the fill amount of timer bar and change ui elements after the time finishes
         timer.color = Color.green;
         float maxTime = gameManager.MaxTime;
         float time = maxTime;
@@ -148,13 +152,14 @@ public class UIController : MonoBehaviour
             if (OnAnswered != null)
                 OnAnswered(false);
             ActivateNextQuestion();
+            //Disable options after time finishes
             ToggleOptions(false);
         }
     }
 
     private void OnOptionButtonClicked(int optionNumer)
     {
-        //Activate next question and see results buttons based on current question
+        //Activate next question or see results buttons based on current question
         currentQuestionAnswered = true;
         ActivateNextQuestion();
 
@@ -179,6 +184,7 @@ public class UIController : MonoBehaviour
 
     private void ActivateNextQuestion()
     {
+        //Enable or disable buttons based on the number of the current question
         if (currentQuestionIndex + 1 < currentQuestions.Count)
         {
             nextQuestionButton.gameObject.SetActive(true);
@@ -204,12 +210,14 @@ public class UIController : MonoBehaviour
 
     private void OnNextQuestionButtonClicked()
     {
+        //Change current question and update the quiz panel
         currentQuestionIndex++;
         UpdateQuizPanel();
     }
 
     private void OnSeeResultButtonClicked()
     {
+        //Update the ranking text and give coins based on the result
         seeResultButton.gameObject.SetActive(false);
         quizPanel.SetActive(false);
 
@@ -242,6 +250,7 @@ public class UIController : MonoBehaviour
 
     private void OnFiftyFiftyButtonClicked()
     {
+        //Randomly disable half of options excluding the correct answer
         fiftyFiftyButton.gameObject.SetActive(false);
         int numberOfOptions = currentQuestions[currentQuestionIndex].options.Count;
         int answer = currentQuestions[currentQuestionIndex].answer - 1;
@@ -267,6 +276,7 @@ public class UIController : MonoBehaviour
 
     private void SetCoinsText()
     {
+        //Change the text of coins based on the current number of coins
         coinsText.text = "Coins = " + coinManager.Coins;
         resultCoinsText.text = "Coins = " + coinManager.Coins;
     }

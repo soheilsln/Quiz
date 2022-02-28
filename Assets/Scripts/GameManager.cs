@@ -44,6 +44,7 @@ public class GameManager : MonoBehaviour
 
     private void LoadQuestions()
     {
+        //Adding all questions to the questions list
         Object[] objects = Resources.LoadAll("Questions/");
         foreach (Object question in objects)
         {
@@ -85,12 +86,14 @@ public class GameManager : MonoBehaviour
 
     private void OnAnswered(bool value)
     {
+        //Increment result by 1 when answered correctly
         if (value)
             result++;
     }
 
     public float GetFinalResult()
     {
+        //Compute the result percentage
         float r = (float)result / (float)currentNumberOfQuestions;
         return r;
     }
